@@ -1,0 +1,47 @@
+{
+  "name": "algo-teach-server",
+  "version": "1.0.0",
+  "description": "算法教学平台 Socket.io 实时通信服务器",
+  "main": "socketio-server.js",
+  "scripts": {
+    "start": "node socketio-server.js",
+    "start:https": "node socketio-server-https.js",
+    "start:win": "start-server.bat",
+    "start:https:win": "start-https.bat",
+    "test": "node test-ssl.js",
+    "dev": "nodemon socketio-server.js",
+    "dev:https": "nodemon socketio-server-https.js",
+    "install:deps": "npm install",
+    "clean": "rimraf node_modules package-lock.json",
+    "reinstall": "npm run clean && npm install"
+  },
+  "keywords": [
+    "socket.io",
+    "websocket",
+    "realtime",
+    "education",
+    "algorithm",
+    "teaching-platform"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "config": {
+    "port": 3001,
+    "httpsPort": 3002
+  }
+}

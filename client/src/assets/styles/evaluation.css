@@ -1,0 +1,132 @@
+/* 统一的评价标准样式 */
+.evaluation-top {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  border: 2px solid #1976D2;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  margin-top: -1.2rem;  /* 向上移动，更靠近导航栏 */
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.15);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.evaluation-top::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.eval-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.eval-header .label {
+  font-weight: 900;
+  font-size: 18px;
+  color: #000000;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.criteria-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.criteria-list > li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #90CAF9;
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  padding-right: 2.3rem;
+  color: #1A237E;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.criteria-list > li.done {
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+  border-color: #FFB300;
+  color: #F57C00;
+  font-weight: 700;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 16px rgba(255, 179, 0, 0.3);
+}
+
+.criteria-list > li .star-icon {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FFD700;
+  font-size: 20px;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { 
+    opacity: 0.9; 
+    transform: translateY(-50%) scale(1);
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(-50%) scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .evaluation-top {
+    padding: 0.6rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .eval-header .label {
+    font-size: 16px;
+  }
+  
+  .criteria-list {
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .criteria-list > li {
+    font-size: 13px;
+    padding: 0.4rem 0.75rem;
+    padding-right: 2rem;
+  }
+}

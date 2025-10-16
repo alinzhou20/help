@@ -1,0 +1,39 @@
+.flowchart {
+  width: 100%;
+  height: auto;
+}
+.flowchart svg {
+  width: 100%;
+  height: auto;
+  background: var(--color-bg);
+}
+.nodes rect, .nodes polygon {
+  fill: var(--color-surface);
+  stroke: #000;
+  stroke-width: 2px;
+  transition: all .25s ease;
+}
+.nodes { isolation: isolate; }
+.nodes text {
+  font-size: 14px;
+  fill: var(--color-text);
+}
+.flow-node-active {
+  /* 使用形状自身的描边高亮，匹配节点形状与大小，并置于填充之上 */
+  stroke: var(--color-primary) !important;
+  stroke-width: 8px; /* 提升可见度 */
+  stroke-linejoin: round;
+  paint-order: stroke fill; /* 先画描边，再画填充，避免被覆盖 */
+  vector-effect: non-scaling-stroke; /* 缩放时线宽保持一致 */
+  filter: drop-shadow(0 0 6px rgba(59,130,246,.45)); /* 细微发光，避免被视觉淹没 */
+}
+.flow-node-passed {
+  fill: var(--color-success-weak);
+}
+.edges line.active {
+  stroke: var(--color-primary);
+}
+.vars { margin-top: 1rem; }
+.fade-move-enter-active, .fade-move-leave-active { transition: all .3s ease; }
+.fade-move-enter-from, .fade-move-leave-to { opacity: 0; transform: translateY(-6px); }
+.error { color: var(--color-danger); font-weight: 600; }

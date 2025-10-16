@@ -1,0 +1,103 @@
+:root{
+  --color-bg: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #111827;
+  --color-primary: #3b82f6; /* blue-500 */
+  --color-success: #16a34a; /* green-600 */
+  --color-success-weak: #dcfce7; /* green-100 */
+  --color-info: #0284c7; /* sky-600 */
+  --color-info-weak: #e0f2fe; /* sky-100 */
+  --color-danger: #dc2626; /* red-600 */
+  --color-muted: #6b7280; /* gray-500 */
+}
+*{ box-sizing: border-box; }
+html{ 
+  height: 100%; 
+  font-size: 16px; /* 基准字体大小，确保 1rem = 16px */
+}
+body,#app{ height: 100%; }
+body{
+  margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-size: 1rem; /* 使用rem单位 */
+}
+
+/* 响应式字体大小调整 */
+@media (max-width: 75rem) { /* 1200px */
+  html { font-size: 15px; }
+}
+@media (max-width: 48rem) { /* 768px */
+  html { font-size: 14px; }
+}
+@media (min-width: 100rem) { /* 1600px */
+  html { font-size: 18px; }
+}
+button{
+  appearance: none;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  cursor: pointer;
+}
+button:disabled{ opacity: .5; cursor: not-allowed; }
+
+/* 优化整体布局高度 */
+html, body {
+  overflow-x: hidden;
+}
+
+/* 自适应高度优化 - 根据屏幕高度调整内容区域高度 */
+@media (max-height: 50rem) { /* 800px */
+  /* 当屏幕高度较小时，减少固定高度值 */
+  .grid {
+    grid-template-rows: 75vh !important;
+  }
+  
+  .left-col,
+  .viz,
+  .ctrl {
+    height: 75vh !important;
+  }
+  
+  .main-content {
+    height: calc(100vh - 180px) !important;
+  }
+}
+
+@media (max-height: 700px) {
+  /* 更小的屏幕使用更小的高度 */
+  .grid {
+    grid-template-rows: 70vh !important;
+  }
+  
+  .left-col,
+  .viz,
+  .ctrl {
+    height: 70vh !important;
+  }
+  
+  .main-content {
+    height: calc(100vh - 160px) !important;
+  }
+}
+
+@media (max-height: 37.5rem) { /* 600px */
+  /* 极小屏幕的适配 */
+  .grid {
+    grid-template-rows: 65vh !important;
+  }
+  
+  .left-col,
+  .viz,
+  .ctrl {
+    height: 65vh !important;
+  }
+  
+  .main-content {
+    height: calc(100vh - 140px) !important;
+  }
+}

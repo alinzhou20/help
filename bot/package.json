@@ -1,0 +1,110 @@
+{
+  "name": "aibot-desktop",
+  "version": "1.0.0",
+  "description": "桌面端AI聊天助手",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "npm run build:electron && concurrently \"npm run dev:react\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev:all": "concurrently \"npm run dev:electron\" \"npm run dev:react\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev:electron": "tsc -w -p tsconfig.electron.json",
+    "dev:react": "webpack serve --config webpack.config.js --mode development",
+    "build": "npm run build:electron && npm run build:react",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build:react": "webpack --config webpack.config.js --mode production",
+    "start": "electron .",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:win-portable": "npm run build && electron-builder --win portable",
+    "dist:all": "npm run build && electron-builder --win nsis portable",
+    "download-pyodide": "node scripts/download-pyodide.js",
+    "postinstall": "npm run download-pyodide"
+  },
+  "keywords": [
+    "electron",
+    "ai",
+    "chat",
+    "desktop"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.10.0",
+    "@types/prop-types": "^15.7.15",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "concurrently": "^8.2.2",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.55.0",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "wait-on": "^9.0.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.1.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@coze/api": "^1.3.7",
+    "axios": "^1.6.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "build": {
+    "appId": "com.yourcompany.aibot",
+    "productName": "小敏老师AI助手",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/cartoon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "verifyUpdateCodeSignature": false,
+      "signDlls": false,
+      "forceCodeSigning": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/cartoon.ico",
+      "uninstallerIcon": "assets/cartoon.ico",
+      "installerHeaderIcon": "assets/cartoon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "小敏老师AI助手"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}.exe"
+    }
+  }
+}

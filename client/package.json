@@ -1,0 +1,50 @@
+{
+  "name": "vue-algo-tutor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:https": "vite --config vite.config.https.ts",
+    "dev:auto": "vite --config vite.config.auto-https.ts",
+    "cert": "generate-cert.bat",
+    "cert:dev": "generate-cert.bat && vite --config vite.config.auto-https.ts",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "server": "node ./server/index.mjs"
+  },
+  "dependencies": {
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/lang-python": "^6.1.4",
+    "@codemirror/language": "^6.9.2",
+    "@codemirror/state": "^6.4.0",
+    "@codemirror/view": "^6.23.1",
+    "@coze/api": "^1.0.0",
+    "@element-plus/icons-vue": "^2.3.2",
+    "@iconify/vue": "^5.0.0",
+    "@lezer/highlight": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "echarts": "^6.0.0",
+    "element-plus": "^2.11.4",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "pinia": "^2.1.7",
+    "vue": "^3.5.8",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "@vitejs/plugin-vue": "^5.1.3",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.0",
+    "sass": "^1.79.4",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.1",
+    "vue-tsc": "^2.1.6"
+  }
+}
