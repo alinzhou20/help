@@ -473,27 +473,12 @@ function checkOtherRoleOnline(): boolean {
   return false
 }
 
-// 操作员只同步特定字段给记录员（步骤1内容、Python代码和步骤3运行结果）
+// 操作员不再同步数据（已禁用）
 function syncToRecorder() {
   saveSharedState()
   
-  // 初始化期间不同步，避免影响记录员的星星统计
-  if (isInitializing) {
-    return
-  }
-  
-  try {
-    emit({
-      type: 'activity3:operator-sync',
-      groupId: session.persisted.groupId!,
-      data: {
-        optimizationDirection: optimizationDirection.value,
-        pythonCode: pythonCode.value,
-        runOutput: runOutput.value,
-        hasError: hasError.value
-      }
-    })
-  } catch {}
+  // 操作员不发送任何消息
+  return
 }
 
 // 监听步骤1变化，同步给记录员
@@ -614,29 +599,8 @@ onMounted(async () => {
     }
   })
   
-  // 订阅成功后，主动请求最新的广播内容（如果还没有接收到代码）
-  setTimeout(() => {
-    if (!displayCode.value && session.persisted.groupId != null) {
-      console.log('[Operator] Requesting broadcast from teacher')
-      emit({ 
-        type: 'student:request-broadcast', 
-        activity: 'a2', 
-        groupId: session.persisted.groupId 
-      })
-      
-      // 1秒后再请求一次，以防第一次请求失败
-      setTimeout(() => {
-        if (!displayCode.value && session.persisted.groupId != null) {
-          console.log('[Operator] Retrying broadcast request')
-          emit({ 
-            type: 'student:request-broadcast', 
-            activity: 'a2', 
-            groupId: session.persisted.groupId 
-          })
-        }
-      }, 1000)
-    }
-  }, 500)
+  // 操作员不主动请求广播，只接收教师主动发送的广播
+  // 代码已从本地存储加载或等待教师主动广播
   
   // 初始化完成后允许同步
   setTimeout(() => {

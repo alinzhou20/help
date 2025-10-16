@@ -26,22 +26,24 @@ export const useTeacherDataStore = defineStore('teacher-data', {
     },
     apply(evt: RealtimeEvent) {
       if (evt.type === 'session:login') {
-        // 只有记录员登录才处理，操作员登录不影响教师端数据
+        // 所有角色的登录都要处理，以便在看板上显示在线状态
+        if (!this.onlineGroups.includes(evt.groupId)) {
+          this.onlineGroups.push(evt.groupId)
+        }
+        
+        // 但只有记录员登录才创建数据结构（因为只有记录员会发送数据）
         if (evt.role === 'recorder' || !evt.role) {
-          // 只有当该组没有数据时才创建空数据结构
           const k = String(evt.groupId)
           if (!this.dataByGroup[k]) {
             this.dataByGroup[k] = { stars: emptyStars(), records: {} }
           }
-          if (!this.onlineGroups.includes(evt.groupId)) this.onlineGroups.push(evt.groupId)
         }
         return
       }
       if (evt.type === 'session:logout') {
-        // 只有记录员退出才更新在线组列表，操作员退出不影响
-        if (evt.role === 'recorder' || !evt.role) {
-          this.onlineGroups = this.onlineGroups.filter(g => g !== evt.groupId)
-        }
+        // 所有角色的退出都要处理，更新在线组列表
+        this.onlineGroups = this.onlineGroups.filter(g => g !== evt.groupId)
+        
         // 注意：不再清空退出小组的星数和记录数据
         // 学生端刷新页面、网络断开等情况不应该导致数据丢失
         // 数据应该持久化保存，直到教师手动清除或课程结束

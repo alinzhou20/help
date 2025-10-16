@@ -32,12 +32,6 @@
                 <Icon v-for="n in starsA3" :key="n" icon="material-symbols:star" class="star-icon" />
               </div>
             </button>
-            <button class="btn" :class="{ active: route.name === 'activity4' }" @click="go('activity4')">
-              <span class="btn-text">活动四</span>
-              <div class="btn-stars" v-if="userRole === 'recorder' && starsA4 > 0">
-                <Icon v-for="n in starsA4" :key="n" icon="material-symbols:star" class="star-icon" />
-              </div>
-            </button>
           </nav>
           
           <div class="spacer"></div>
@@ -78,7 +72,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { subscribe, emit, type RealtimeEvent } from '@/utils/realtime'
 
-type TabKey = 'activity1' | 'activity2' | 'activity3' | 'activity4'
+type TabKey = 'activity1' | 'activity2' | 'activity3'
 const store = useSessionStore()
 
 const loggedIn = computed(() => store.isLoggedIn())
@@ -90,8 +84,7 @@ const userRole = computed(() => store.persisted.role || 'recorder')
 const starsA1 = computed(() => store.getRecords<number>('stars_a1', 0))
 const starsA2 = computed(() => store.getRecords<number>('stars_a2', 0))
 const starsA3 = computed(() => store.getRecords<number>('stars_a3', 0))
-const starsA4 = computed(() => store.getRecords<number>('stars_a4', 0))
-const totalStars = computed(() => starsA1.value + starsA2.value + starsA3.value + starsA4.value)
+const totalStars = computed(() => starsA1.value + starsA2.value + starsA3.value)
 
 const route = useRoute()
 const router = useRouter()

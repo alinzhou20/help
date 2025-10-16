@@ -4,7 +4,6 @@ import { useTeacherStore } from '@/stores/useTeacherStore'
 import Activity1 from '@/views/student/Activity1.vue'
 import Activity2 from '@/views/student/Activity2.vue'
 import Activity3 from '@/views/student/Activity3.vue'
-import Activity4 from '@/views/student/Activity4.vue'
 import Operator from '@/views/operator/index.vue'
 import Login from '@/views/login/student.vue'
 import TeacherLogin from '@/views/login/teacher.vue'
@@ -19,7 +18,6 @@ const routes = [
   { path: '/activity1', name: 'activity1', component: Activity1 },
   { path: '/activity2', name: 'activity2', component: Activity2 },
   { path: '/activity3', name: 'activity3', component: Activity3 },
-  { path: '/activity4', name: 'activity4', component: Activity4 },
   // 操作员端
   { path: '/operator', name: 'operator', component: Operator },
   // 教师端
@@ -80,7 +78,7 @@ router.beforeEach((to: RouteLocationNormalized) => {
 router.afterEach((to: RouteLocationNormalized) => {
   const store = useSessionStore()
   const tab = to.name as TabKey | undefined
-  if (tab === 'activity1' || tab === 'activity2' || tab === 'activity3' || tab === 'activity4') {
+  if (tab === 'activity1' || tab === 'activity2' || tab === 'activity3') {
     store.setTab(tab)
   }
 })

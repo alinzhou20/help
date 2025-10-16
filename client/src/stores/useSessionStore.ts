@@ -8,7 +8,7 @@ const K_LOCKS = 'va_session_locks'
 const K_LOCKER = 'va_session_locker'
 
 // Types
-export type TabKey = 'activity1' | 'activity2' | 'activity3' | 'activity4'
+export type TabKey = 'activity1' | 'activity2' | 'activity3'
 export interface GroupLock { by: string; at: number }
 
 interface PersistedState {
@@ -162,11 +162,9 @@ export const useSessionStore = defineStore('session', () => {
         const starsA1 = getRecords<number>('stars_a1', 0)
         const starsA2 = getRecords<number>('stars_a2', 0)
         const starsA3 = getRecords<number>('stars_a3', 0)
-        const starsA4 = getRecords<number>('stars_a4', 0)
         if (typeof starsA1 === 'number') try { emit({ type: 'student:update', groupId: gid, activity: 'a1', stars: starsA1, payload: null }) } catch {}
         if (typeof starsA2 === 'number') try { emit({ type: 'student:update', groupId: gid, activity: 'a2', stars: starsA2, payload: null }) } catch {}
         if (typeof starsA3 === 'number') try { emit({ type: 'student:update', groupId: gid, activity: 'a3', stars: starsA3, payload: null }) } catch {}
-        if (typeof starsA4 === 'number') try { emit({ type: 'student:update', groupId: gid, activity: 'a4', stars: starsA4, payload: null }) } catch {}
       }
     })
     // 不持久保留 off；页面卸载后上下文会销毁
