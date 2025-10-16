@@ -41,28 +41,31 @@ export async function connectSocket(url = 'http://localhost:3001') {
     // @ts-ignore
     const io = (window as any).io
     if (io) {
-      // 自动检测当前网络地址和协议
-      const host = window.location.hostname
-      const isHttps = window.location.protocol === 'https:'
-      const httpProtocol = isHttps ? 'https:' : 'http:'
-      const port = isHttps ? 3002 : 3001  // HTTPS使用3002端口，HTTP使用3001端口
+      // 优先连接到localhost，因为Socket.IO服务器运行在本地
+      // 这样可以避免防火墙和跨域问题
+      const socketUrl = 'http://localhost:3001'
       
-      // 构建Socket URL
-      let socketUrl: string
-      if (host === 'localhost' && !isHttps) {
-        socketUrl = url  // 本地HTTP开发使用默认URL
-      } else {
-        socketUrl = `${httpProtocol}//${host}:${port}`
-      }
+      console.log('[Socket.io] Attempting to connect to:', socketUrl)
       
       ioSocket = io(socketUrl, { 
         transports: ['websocket', 'polling'], 
         autoConnect: true,
-        secure: isHttps,
-        rejectUnauthorized: false  // 允许自签名证书
+        secure: false,  // 始终使用非安全连接
+        rejectUnauthorized: false,  // 允许自签名证书
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000
       })
-      connected = true
-      console.log('[Socket.io] Connected to:', socketUrl)
+      
+      // 监听连接事件
+      ioSocket.on('connect', () => {
+        connected = true
+        console.log('[Socket.io] Successfully connected to:', socketUrl)
+      })
+      
+      ioSocket.on('connect_error', (error: any) => {
+        console.error('[Socket.io] Connection error:', error.message)
+      })
     }
   } catch (e) {
     console.error('[Socket.io] Connection failed:', e)

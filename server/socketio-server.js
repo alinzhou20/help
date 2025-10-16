@@ -132,4 +132,6 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`[Socket.io Server] Running on http://0.0.0.0:${PORT}`);
+  console.log(`[Socket.io Server] Clients should connect to: http://localhost:${PORT}`);
+  console.log(`[Socket.io Server] If connection fails, run setup-firewall.bat as administrator`);
 });

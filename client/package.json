@@ -4,15 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:https": "vite --config vite.config.https.ts",
+    "dev": "vite --config vite.config.auto-https.ts",
     "dev:auto": "vite --config vite.config.auto-https.ts",
     "cert": "generate-cert.bat",
-    "cert:dev": "generate-cert.bat && vite --config vite.config.auto-https.ts",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "build": "vue-tsc -b && vite build --config vite.config.auto-https.ts",
+    "preview": "vite preview --config vite.config.auto-https.ts",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "server": "node ./server/index.mjs"
   },

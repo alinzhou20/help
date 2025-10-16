@@ -2,7 +2,7 @@
   <div class="login-page">
     <el-card class="login-card">
       <h1 class="title">信息科技课堂</h1>
-      <p class="subtitle">小组登录</p>
+      <p class="subtitle" @click="requestClipboardPermission" style="cursor: pointer;">小组登录</p>
       
       <el-form @submit.prevent="onLogin" class="login-form">
         <div class="form-group">
@@ -53,6 +53,7 @@
 import { computed, ref, watch, onMounted } from 'vue'
 import { useSessionStore } from '@/stores/useSessionStore'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 const store = useSessionStore()
 const groupId = ref<number | null>(null)
@@ -69,14 +70,9 @@ watch([groupId, role], () => {
 })
 
 onMounted(() => { 
-  // 如果已经登录，根据角色跳转到相应页面
+  // 如果已经登录，跳转到当前活动页面（操作员和记录员一样）
   if (store.isLoggedIn()) {
-    const userRole = store.persisted.role || 'recorder'
-    if (userRole === 'operator') {
-      router.replace({ name: 'operator' })
-    } else {
-      router.replace({ name: store.persisted.currentTab })
-    }
+    router.replace({ name: store.persisted.currentTab })
   }
 })
 
@@ -85,14 +81,25 @@ function onLogin() {
   
   try {
     store.login(groupId.value, role.value)
-    // 根据角色跳转到不同页面
-    if (role.value === 'operator') {
-      router.replace({ name: 'operator' })
-    } else {
-      router.replace({ name: store.persisted.currentTab })
-    }
+    // 无论什么角色，都跳转到当前活动页面
+    router.replace({ name: store.persisted.currentTab })
   } catch (e: any) {
     err.value = String(e?.message || e)
+  }
+}
+
+// 请求剪贴板权限
+async function requestClipboardPermission() {
+  try {
+    // 尝试读取剪贴板以触发权限请求
+    await navigator.clipboard.readText()
+    ElMessage.success('剪贴板权限已授予')
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'NotAllowedError') {
+      ElMessage.warning('请在浏览器设置中允许剪贴板权限')
+    } else {
+      ElMessage.error('无法获取剪贴板权限')
+    }
   }
 }
 </script>
@@ -132,6 +139,11 @@ function onLogin() {
   font-size: 18px;
   color: #6b7280;
   margin: 0 0 40px 0;
+  transition: color 0.2s;
+}
+
+.subtitle:hover {
+  color: #4b5563;
 }
 
 .login-form {

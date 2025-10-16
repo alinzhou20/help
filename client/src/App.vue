@@ -4,36 +4,7 @@
     <template v-if="isTeacherRoute">
       <router-view />
     </template>
-    <!-- 操作员界面 -->
-    <template v-else-if="loggedIn && userRole === 'operator'">
-      <header class="app-header">
-        <div class="toolbar">
-          <div class="nav-title">
-            <Icon icon="material-symbols:data-object" class="title-icon" />
-            <span class="title-text">算法的执行 - 操作员</span>
-          </div>
-          
-          <div class="spacer"></div>
-          
-          <div class="user-ops">
-            <div class="group-info-container">
-              <Icon icon="material-symbols:group" class="group-icon" />
-              <span class="group-label">第</span>
-              <span class="group-number">{{ groupLabel }}</span>
-              <span class="group-label">组</span>
-            </div>
-            <div class="role-label">操作员</div>
-            <button class="btn-menu" @click="onLogout">
-              <Icon icon="material-symbols:logout" class="menu-icon" />
-            </button>
-          </div>
-        </div>
-      </header>
-      <main class="app-main">
-        <router-view />
-      </main>
-    </template>
-    <!-- 记录员界面 -->
+    <!-- 学生端界面（操作员和记录员共用） -->
     <template v-else-if="loggedIn">
       <header class="app-header">
         <div class="toolbar">
@@ -45,20 +16,26 @@
           <nav class="tabs">
             <button class="btn" :class="{ active: route.name === 'activity1' }" @click="go('activity1')">
               <span class="btn-text">活动一</span>
-              <div class="btn-stars" v-if="starsA1 > 0">
+              <div class="btn-stars" v-if="userRole === 'recorder' && starsA1 > 0">
                 <Icon v-for="n in starsA1" :key="n" icon="material-symbols:star" class="star-icon" />
               </div>
             </button>
             <button class="btn" :class="{ active: route.name === 'activity2' }" @click="go('activity2')">
               <span class="btn-text">活动二</span>
-              <div class="btn-stars" v-if="starsA2 > 0">
+              <div class="btn-stars" v-if="userRole === 'recorder' && starsA2 > 0">
                 <Icon v-for="n in starsA2" :key="n" icon="material-symbols:star" class="star-icon" />
               </div>
             </button>
             <button class="btn" :class="{ active: route.name === 'activity3' }" @click="go('activity3')">
               <span class="btn-text">活动三</span>
-              <div class="btn-stars" v-if="starsA3 > 0">
+              <div class="btn-stars" v-if="userRole === 'recorder' && starsA3 > 0">
                 <Icon v-for="n in starsA3" :key="n" icon="material-symbols:star" class="star-icon" />
+              </div>
+            </button>
+            <button class="btn" :class="{ active: route.name === 'activity4' }" @click="go('activity4')">
+              <span class="btn-text">活动四</span>
+              <div class="btn-stars" v-if="userRole === 'recorder' && starsA4 > 0">
+                <Icon v-for="n in starsA4" :key="n" icon="material-symbols:star" class="star-icon" />
               </div>
             </button>
           </nav>
@@ -71,8 +48,9 @@
               <span class="group-label">第</span>
               <span class="group-number">{{ groupLabel }}</span>
               <span class="group-label">组</span>
+              <span class="role-badge">{{ userRole === 'operator' ? '操作员' : '记录员' }}</span>
             </div>
-            <div class="total-stars-container">
+            <div class="total-stars-container" v-if="userRole === 'recorder'">
               <span class="total-label">总星数</span>
               <span class="total-value">{{ totalStars }}</span>
             </div>
@@ -100,7 +78,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { subscribe, emit, type RealtimeEvent } from '@/utils/realtime'
 
-type TabKey = 'activity1' | 'activity2' | 'activity3'
+type TabKey = 'activity1' | 'activity2' | 'activity3' | 'activity4'
 const store = useSessionStore()
 
 const loggedIn = computed(() => store.isLoggedIn())
@@ -112,7 +90,8 @@ const userRole = computed(() => store.persisted.role || 'recorder')
 const starsA1 = computed(() => store.getRecords<number>('stars_a1', 0))
 const starsA2 = computed(() => store.getRecords<number>('stars_a2', 0))
 const starsA3 = computed(() => store.getRecords<number>('stars_a3', 0))
-const totalStars = computed(() => starsA1.value + starsA2.value + starsA3.value)
+const starsA4 = computed(() => store.getRecords<number>('stars_a4', 0))
+const totalStars = computed(() => starsA1.value + starsA2.value + starsA3.value + starsA4.value)
 
 const route = useRoute()
 const router = useRouter()
@@ -442,6 +421,19 @@ onUnmounted(() => {
     0 0 20px rgba(129, 212, 250, 0.5);
   font-family: 'Courier New', monospace;
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.role-badge {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
 }
 
 @keyframes pulse-glow {

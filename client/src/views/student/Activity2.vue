@@ -504,8 +504,8 @@ onMounted(() => {
     
     // 响应教师端的ping请求
     if (evt.type === 'teacher:ping') {
-      // 如果有保存的状态，立即发送给教师端
-      if (hasReceivedContent.value && session.persisted.groupId != null) {
+      // 如果有保存的状态，立即发送给教师端（只有记录员才发送）
+      if (hasReceivedContent.value && session.persisted.groupId != null && session.persisted.role === 'recorder') {
         setTimeout(() => {
           const currentStars = stars.value
           emit({

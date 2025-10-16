@@ -8,7 +8,7 @@ const K_LOCKS = 'va_session_locks'
 const K_LOCKER = 'va_session_locker'
 
 // Types
-export type TabKey = 'activity1' | 'activity2' | 'activity3'
+export type TabKey = 'activity1' | 'activity2' | 'activity3' | 'activity4'
 export interface GroupLock { by: string; at: number }
 
 interface PersistedState {

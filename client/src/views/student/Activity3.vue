@@ -154,17 +154,21 @@ function updateTeacher() {
   }
   
   session.setRecords('a3', records)
-  session.setRecords('stars_a3', stars.value)
   
-  // 广播给教师端
-  if (session.persisted.groupId != null) {
-    emit({
-      type: 'student:update',
-      groupId: session.persisted.groupId,
-      activity: 'a3',
-      stars: stars.value,
-      payload: records
-    })
+  // 只有记录员才保存星星数和发送更新
+  if (session.persisted.role === 'recorder') {
+    session.setRecords('stars_a3', stars.value)
+    
+    // 广播给教师端
+    if (session.persisted.groupId != null) {
+      emit({
+        type: 'student:update',
+        groupId: session.persisted.groupId,
+        activity: 'a3',
+        stars: stars.value,
+        payload: records
+      })
+    }
   }
 }
 
