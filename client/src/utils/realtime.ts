@@ -34,24 +34,23 @@ function loadScript(src: string) {
   })
 }
 
-export async function connectSocket(url = 'http://localhost:3001') {
+export async function connectSocket(url?: string) {
   if (connected) return ioSocket
   try {
     await loadScript('https://cdn.socket.io/4.7.5/socket.io.min.js')
     // @ts-ignore
     const io = (window as any).io
     if (io) {
-      // 优先连接到localhost，因为Socket.IO服务器运行在本地
-      // 这样可以避免防火墙和跨域问题
-      const socketUrl = 'http://localhost:3001'
+      // 使用相对路径，通过 Vite 代理连接
+      // 这样可以避免跨域问题，并统一通过前端服务器
+      const socketUrl = url || ''  // 使用空字符串表示连接到当前域
       
-      console.log('[Socket.io] Attempting to connect to:', socketUrl)
+      console.log('[Socket.io] Connecting through proxy')
       
       ioSocket = io(socketUrl, { 
+        path: '/socket.io/',  // 指定 Socket.IO 路径
         transports: ['websocket', 'polling'], 
         autoConnect: true,
-        secure: false,  // 始终使用非安全连接
-        rejectUnauthorized: false,  // 允许自签名证书
         reconnection: true,
         reconnectionAttempts: 5,
         reconnectionDelay: 1000
@@ -60,7 +59,7 @@ export async function connectSocket(url = 'http://localhost:3001') {
       // 监听连接事件
       ioSocket.on('connect', () => {
         connected = true
-        console.log('[Socket.io] Successfully connected to:', socketUrl)
+        console.log('[Socket.io] Successfully connected through proxy')
       })
       
       ioSocket.on('connect_error', (error: any) => {
